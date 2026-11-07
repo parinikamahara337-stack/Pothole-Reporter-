@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pothole Reporter - My Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* ---------- navbar ---------- */
+        nav {
+            background-color: #1f2937;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav .logo span {
+            color: #f59e0b;
+        }
+
+        nav .links a {
+            color: #d1d5db;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav .links a:hover,
+        nav .links a.active {
+            color: #f59e0b;
+        }
+
+        /* ---------- page ---------- */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .top h1 {
+            color: #1f2937;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #f59e0b;
+            color: #1f2937;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #d98a06;
+        }
+
+        /* summary numbers */
+        .summary {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .summary div {
+            flex: 1;
+            min-width: 120px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .summary strong {
+            display: block;
+            font-size: 26px;
+        }
+
+        /* filter */
+        .filter {
+            margin-bottom: 20px;
+        }
+
+        .filter select {
+            padding: 8px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* each report */
+        .report {
+            display: flex;
+            gap: 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .report img {
+            width: 150px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .no-photo {
+            width: 150px;
+            height: 120px;
+            background-color: #e5e7eb;
+            color: #666;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .info h3 {
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+        .info p {
+            word-break: break-word;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 15px;
+            margin: 0 5px 8px 0;
+            background-color: #e5e7eb;
+        }
+
+        .Minor {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .Moderate {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .Dangerous {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .Fixed {
+            background-color: #1f2937;
+            color: #86efac;
+        }
+
+        .date {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .actions button {
+            border: 1px solid #aaa;
+            background-color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-right: 8px;
+        }
+
+        .actions button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .actions .delete {
+            color: #b91c1c;
+            border-color: #b91c1c;
+        }
+
+        /* shown when there are no reports */
+        #empty {
+            display: none;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        #empty p {
+            margin: 10px 0 20px 0;
+            color: #555;
+        }
+
+        /* small screens */
+        @media (max-width: 600px) {
+            .report {
+                flex-direction: column;
+            }
+
+            .report img,
+            .no-photo {
+                width: 100%;
+                height: 180px;
+            }
+        }
+
+        /* ---------- footer ---------- */
+        footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Pothole<span>Reporter</span></a>
+        <div class="links">
+            <a href="index.html">Home</a>
+            <a href="report.html">Report Pothole</a>
+            <a href="myreports.html" class="active">My Reports</a>
+            <a href="#" id="logoutLink">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div id="content">
+            <div class="top">
+                <h1>My Reports</h1>
+                <a href="report.html" class="btn">+ New Report</a>
+            </div>
+
+            <div class="summary">
+                <div><strong id="totalCount">0</strong>Total</div>
+                <div><strong id="openCount">0</strong>Reported</div>
+                <div><strong id="fixedCount">0</strong>Fixed</div>
+            </div>
+
+            <div class="filter">
+                <label for="filterSeverity">Show: </label>
+                <select id="filterSeverity">
+                    <option value="All">All severities</option>
+                    <option value="Minor">Minor</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Dangerous">Dangerous</option>
+                </select>
+            </div>
+
+            <div id="list"></div>
+        </div>
+
+        <div id="empty">
+            <h2>No reports yet</h2>
+            <p>You have not reported any potholes. Spotted one? Report it now.</p>
+            <a href="report.html" class="btn">Report a Pothole</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Pothole Reporter | Student project</p>
+    </footer>
+
+    <script>
+        var list = document.getElementById("list");
+        var filter = document.getElementById("filterSeverity");
+        var allReports = [];
+
+        // ---------- logout ----------
+        var logoutLink = document.getElementById("logoutLink");
+
+        fetch("/api/me")
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                if (data.loggedIn) {
+                    logoutLink.textContent = "Logout (" + data.name + ")";
+                }
+            });
+
+        logoutLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            fetch("/api/logout", { method: "POST" })
+                .then(function () {
+                    window.location.href = "login.html";
+                });
+        });
+
+        // ---------- load reports from the server (MongoDB) ----------
+        function loadReports() {
+            fetch("/api/reports")
+                .then(function (res) {
+                    if (res.status === 401) {
+                        window.location.href = "login.html";
+                        return null;
+                    }
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (!data) {
+                        return;
+                    }
+                    allReports = data;
+                    showReports();
+                })
+                .catch(function () {
+                    list.textContent = "Could not load your reports. Is the server running?";
+                });
+        }
+
+        // make a new element with a class and some text
+        function makeElement(tag, className, text) {
+            var el = document.createElement(tag);
+            if (className) {
+                el.className = className;
+            }
+            if (text) {
+                el.textContent = text;
+            }
+            return el;
+        }
+
+        // build one report card
+        function makeCard(r) {
+            var card = makeElement("div", "report");
+
+            if (r.photo) {
+                var img = document.createElement("img");
+                img.src = r.photo;
+                img.alt = "Photo of pothole at " + r.location;
+                card.appendChild(img);
+            } else {
+                card.appendChild(makeElement("div", "no-photo", "No photo added"));
+            }
+
+            var info = makeElement("div", "info");
+            info.appendChild(makeElement("h3", "", r.location));
+            info.appendChild(makeElement("span", "tag " + r.severity, r.severity));
+            info.appendChild(makeElement("span", "tag " + r.status, r.status));
+            info.appendChild(makeElement("span", "tag", r.roadType));
+            info.appendChild(makeElement("p", "", r.description));
+            info.appendChild(makeElement("p", "date", "Reported on " + new Date(r.date).toLocaleDateString()));
+
+            var actions = makeElement("div", "actions");
+
+            // button to mark as fixed (only if not fixed already)
+            if (r.status !== "Fixed") {
+                var fixBtn = makeElement("button", "", "Mark as fixed");
+                fixBtn.addEventListener("click", function () {
+                    fetch("/api/reports/" + r._id, { method: "PUT" })
+                        .then(function (res) {
+                            if (!res.ok) { throw new Error(); }
+                            loadReports();
+                        })
+                        .catch(function () {
+                            alert("Could not update the report.");
+                        });
+                });
+                actions.appendChild(fixBtn);
+            }
+
+            var delBtn = makeElement("button", "delete", "Delete");
+            delBtn.addEventListener("click", function () {
+                if (confirm("Delete this report?")) {
+                    fetch("/api/reports/" + r._id, { method: "DELETE" })
+                        .then(function (res) {
+                            if (!res.ok) { throw new Error(); }
+                            loadReports();
+                        })
+                        .catch(function () {
+                            alert("Could not delete the report.");
+                        });
+                }
+            });
+            actions.appendChild(delBtn);
+
+            info.appendChild(actions);
+            card.appendChild(info);
+            return card;
+        }
+
+        function showReports() {
+            var all = allReports;
+
+            // no reports at all -> show the empty message
+            if (all.length === 0) {
+                document.getElementById("content").style.display = "none";
+                document.getElementById("empty").style.display = "block";
+                return;
+            }
+            document.getElementById("content").style.display = "block";
+            document.getElementById("empty").style.display = "none";
+
+            // numbers at the top
+            var fixed = all.filter(function (r) { return r.status === "Fixed"; }).length;
+            document.getElementById("totalCount").textContent = all.length;
+            document.getElementById("fixedCount").textContent = fixed;
+            document.getElementById("openCount").textContent = all.length - fixed;
+
+            // apply the filter (server already sends newest first)
+            var shown = all;
+            if (filter.value !== "All") {
+                shown = all.filter(function (r) { return r.severity === filter.value; });
+            }
+
+            list.textContent = "";
+            if (shown.length === 0) {
+                list.appendChild(makeElement("p", "", "No reports match this filter."));
+                return;
+            }
+            shown.forEach(function (r) {
+                list.appendChild(makeCard(r));
+            });
+        }
+
+        filter.addEventListener("change", showReports);
+        loadReports();
+    </script>
+
+</body>
+
+</html>

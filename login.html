@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pothole Reporter - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        nav {
+            background-color: #1f2937;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav .logo span {
+            color: #f59e0b;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .tabs button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tabs button.on {
+            color: #1f2937;
+            border-bottom-color: #f59e0b;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            color: #1f2937;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        .error {
+            color: #b91c1c;
+            font-size: 14px;
+            min-height: 20px;
+            margin-top: 10px;
+        }
+
+        .submit {
+            width: 100%;
+            background-color: #f59e0b;
+            color: #1f2937;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit:hover {
+            background-color: #d98a06;
+        }
+
+        #signupForm {
+            display: none;
+        }
+
+        footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <span class="logo">Pothole<span>Reporter</span></span>
+    </nav>
+
+    <div class="container">
+        <div class="box">
+
+            <div class="tabs">
+                <button type="button" id="tabLogin" class="on">Sign in</button>
+                <button type="button" id="tabSignup">Sign up</button>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <h1>Welcome back</h1>
+                <p class="subtitle">Sign in to see your reports.</p>
+
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="you@example.com">
+
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Your password">
+
+                <p class="error" id="loginError"></p>
+                <button type="submit" class="submit">Sign in</button>
+            </form>
+
+            <form id="signupForm" novalidate>
+                <h1>Create an account</h1>
+                <p class="subtitle">It only takes a minute.</p>
+
+                <label for="signupName">Name</label>
+                <input type="text" id="signupName" placeholder="Your name">
+
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" placeholder="you@example.com">
+
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="At least 6 characters">
+
+                <label for="signupConfirm">Confirm password</label>
+                <input type="password" id="signupConfirm" placeholder="Type the password again">
+
+                <p class="error" id="signupError"></p>
+                <button type="submit" class="submit">Sign up</button>
+            </form>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Pothole Reporter | Student project</p>
+    </footer>
+
+    <script>
+        var loginForm = document.getElementById("loginForm");
+        var signupForm = document.getElementById("signupForm");
+        var tabLogin = document.getElementById("tabLogin");
+        var tabSignup = document.getElementById("tabSignup");
+
+        function validateEmail(email) {
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        tabLogin.addEventListener("click", function () {
+            loginForm.style.display = "block";
+            signupForm.style.display = "none";
+            tabLogin.className = "on";
+            tabSignup.className = "";
+        });
+
+        tabSignup.addEventListener("click", function () {
+            loginForm.style.display = "none";
+            signupForm.style.display = "block";
+            tabLogin.className = "";
+            tabSignup.className = "on";
+        });
+
+        // send the details to the server
+        function sendToServer(url, data, errorBox) {
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+                .then(function (res) {
+                    return res.json().then(function (body) {
+                        if (!res.ok) {
+                            errorBox.textContent = body.error;
+                        } else {
+                            window.location.href = "index.html";
+                        }
+                    });
+                })
+                .catch(function () {
+                    errorBox.textContent = "Could not reach the server. Is it running?";
+                });
+        }
+
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var email = document.getElementById("loginEmail").value.trim();
+            var password = document.getElementById("loginPassword").value;
+            var errorBox = document.getElementById("loginError");
+            errorBox.textContent = "";
+
+            if (email === "" || password === "") {
+                errorBox.textContent = "Please enter your email and password.";
+                return;
+            }
+            if (!validateEmail(email)) {
+                errorBox.textContent = "Please enter a valid email.";
+                return;
+            }
+            sendToServer("/api/login", { email: email, password: password }, errorBox);
+        });
+
+        signupForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            var name = document.getElementById("signupName").value.trim();
+            var email = document.getElementById("signupEmail").value.trim();
+            var password = document.getElementById("signupPassword").value;
+            var confirm = document.getElementById("signupConfirm").value;
+            var errorBox = document.getElementById("signupError");
+            errorBox.textContent = "";
+
+            if (name === "" || email === "" || password === "") {
+                errorBox.textContent = "Please fill in all the fields.";
+                return;
+            }
+            if (!validateEmail(email)) {
+                errorBox.textContent = "Please enter a valid email.";
+                return;
+            }
+            if (password.length < 6) {
+                errorBox.textContent = "Password must be at least 6 characters.";
+                return;
+            }
+            if (password !== confirm) {
+                errorBox.textContent = "The two passwords do not match.";
+                return;
+            }
+            sendToServer("/api/signup", { name: name, email: email, password: password }, errorBox);
+        });
+    </script>
+
+</body>
+
+</html>

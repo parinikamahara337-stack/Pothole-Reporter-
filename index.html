@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pothole Reporter - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* ---------- navbar ---------- */
+        nav {
+            background-color: #1f2937;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav .logo span {
+            color: #f59e0b;
+        }
+
+        nav .links a {
+            color: #d1d5db;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav .links a:hover,
+        nav .links a.active {
+            color: #f59e0b;
+        }
+
+        /* ---------- hero ---------- */
+        .hero {
+            background-color: #374151;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 550px;
+            margin: 0 auto 25px auto;
+            font-size: 18px;
+            color: #e5e7eb;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #f59e0b;
+            color: #1f2937;
+            padding: 12px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #d98a06;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            color: #1f2937;
+        }
+
+        /* ---------- sections ---------- */
+        .section {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1f2937;
+        }
+
+        .steps {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .step {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 260px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .step h3 {
+            color: #b45309;
+            margin-bottom: 8px;
+        }
+
+        .about-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-left: 6px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .count-box {
+            text-align: center;
+            background-color: #1f2937;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .count-box .number {
+            font-size: 42px;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+
+        /* ---------- footer ---------- */
+        footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Pothole<span>Reporter</span></a>
+        <div class="links">
+            <a href="index.html" class="active">Home</a>
+            <a href="report.html">Report Pothole</a>
+            <a href="myreports.html">My Reports</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Bad roads? Report them.</h1>
+        <p>Spotted a pothole on your way to college or work? Tell us where it is and how bad it is, and keep a record of everything you have reported.</p>
+        <a href="report.html" class="btn">Report a Pothole</a>
+        <a href="myreports.html" class="btn btn-outline">View My Reports</a>
+    </div>
+
+    <div class="section">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step">
+                <h3>1. Find it</h3>
+                <p>Spot a pothole on a road near you and note the location.</p>
+            </div>
+            <div class="step">
+                <h3>2. Report it</h3>
+                <p>Fill in the form with the location, description and a photo if you have one.</p>
+            </div>
+            <div class="step">
+                <h3>3. Track it</h3>
+                <p>See all your reports on one page and mark them as fixed.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="count-box">
+            <div class="number" id="total">0</div>
+            <p>potholes reported on this device</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Why report potholes?</h2>
+        <div class="about-box">
+            <p>Potholes can damage vehicles and cause accidents, especially for two-wheelers and at night or during the rains. Reporting them is the first step to getting them repaired. This is a student project, so reports are saved only in your own browser.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Pothole Reporter | Student project</p>
+    </footer>
+
+    <script>
+        // show how many reports are saved in the browser
+        var reports = [];
+        try {
+            reports = JSON.parse(localStorage.getItem("potholeReports")) || [];
+        } catch (e) {
+            reports = [];
+        }
+        document.getElementById("total").textContent = reports.length;
+    </script>
+
+</body>
+
+</html>
