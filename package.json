@@ -1,0 +1,19 @@
+{
+  "name": "new-code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serverfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.12.0"
+  }
+}
